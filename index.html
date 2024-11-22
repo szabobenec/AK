@@ -4,174 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>
-        let szam;
-        szam = 1;
-        let meret;
-        let difficulty;
-        document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("akBt").addEventListener("click", function () {
-                let sor = document.getElementById("sor").value;
-                let oszlop = document.getElementById("oszlop").value;
-                let hova = document.getElementById("ak");
-                akGeneral(sor, oszlop, hova);
-            })
-        })
-        var akLogika = [];
-        function akGeneral(sor, oszlop, hova) {
-            szam = 0;
-            hova.innerHTML = "";
-            akLogika = [];
-            for (let i = 0; i < sor; i++) {
-                let sorElem = document.createElement("div");
-                sorElem.classList.add("sor");
-                akLogika.push([]);
-                for (let j = 0; j < oszlop; j++) {
-                    let oszlopElem = document.createElement("div");
-                    oszlopElem.classList.add("oszlop");
-                    oszlopElem.dataset.x = i;
-                    oszlopElem.dataset.y = j;
-                    oszlopElem.addEventListener("click", egyfel)
-                    sorElem.appendChild(oszlopElem);
-                    akLogika[i].push(0);
-                    //akLogika.addEventListener("click", function(){ alert("Hello World!"); });
-                    oszlopElem.addEventListener("contextmenu", (e) => {
-                        e.preventDefault();
-                        oszlopElem.style.backgroundColor = "orange";
-                        oszlopElem.innerHTML = "&#x1F6A9";
-                    });
-                }
-                hova.appendChild(sorElem);
-            }
-            difficulty = document.getElementById("nehezseg").value;
-            console.log(difficulty);
-            diff(difficulty);
-            logika(akLogika, difficulty);
-        }
-
-        function logika(akL, arany) {
-            let x = parseInt(akL.length);
-            let y = parseInt(akL[0].length);
-            let akna = Math.floor(x * y * arany);
-            let db = 0;
-            meret = x * y;
-            console.log(meret);
-            while (db < akna) {
-                let hx = Math.floor(Math.random() * x);
-                let hy = Math.floor(Math.random() * y);
-                if (akL[hx][hy] != "A") {
-                    akL[hx][hy] = "A";
-                    db++;
-                }
-            }
-            for (let i = 0; i < x; i++) {
-                for (let j = 0; j < y; j++) {
-                    if (akL[i][j] != "A") {
-                        akL[i][j] = korulotte(i, j, akL, x, y);
-                    }
-                }
-
-            }
-            console.log(akL);
-        }
-        function korulotte(x, y, akL, mx, my) {
-            let db = 0;
-            for (let i = (x > 0 ? x - 1 : 0); i < (x == mx - 1 ? x + 1 : x + 2); i++) {
-                for (let j = (y > 0 ? y - 1 : 0); j < (y == my - 1 ? y + 1 : y + 2); j++) {
-                    if (akL[i][j] == "A") {
-                        db++;
-                    }
-                }
-            }
-            return db;
-        }
-
-        function diff(difficulty) {
-            let a = 1;
-            let b = 0.1
-            for (let i = 0; i < 4; i++) {
-                if (difficulty > b) {
-                    a = a + 5;
-                }
-                b = b + 0.1;
-            }
-            for (let i = 0; i < 3; i++) {
-                if (difficulty > b) {
-                    a = a - 5;
-                }
-                b = b + 0.1;
-            }
-            document.getElementById("sor").value = a;
-            document.getElementById("oszlop").value = a;
-        }
-
-        function egyfel() {
-            let elem = akLogika[this.dataset.x][this.dataset.y];
-            let a = this;
-            szam++;
-            console.log(szam);
-            if (elem != "A") {
-                a.style.backgroundColor = "green";
-                a.innerHTML = elem;
-
-                if (szam > meret - (meret * difficulty)) {
-                    felfed();
-                    alert("YOU WIN!");
-                }
-                else if (elem == 0) {
-                    nulla(this.dataset.x, this.dataset.y)
-                }
-            }
-            else if (elem == "A") {
-                a.style.backgroundColor = "red";
-                felfed();
-                alert("YOU LOSE");
-            }
-        }
-
-        function nulla(bx, by) {
-            let terulete = document.getElementById("ak");
-            console.log(terulete);
-        }
-
-        function felfed() {
-            let terulet = document.getElementById("ak");
-            for (let i = 0; i < terulet.children.length; i++) {
-                for (let j = 0; j < terulet.children[i].children.length; j++) {
-                    if (akLogika[i][j] == "A" && terulet.children[i].children[j].style.backgroundColor == "orange") {
-
-                        terulet.children[i].children[j].innerHTML = "&#x1F4A3;";
-                    }
-                    else {
-                        if (akLogika[i][j] == "A" && terulet.children[i].children[j].style.backgroundColor != "orange") {
-
-                            terulet.children[i].children[j].innerHTML = "&#x1F4A3;";
-                            terulet.children[i].children[j].style.backgroundColor = "red";
-                        }
-                        else if (akLogika[i][j] != "A" && terulet.children[i].children[j].style.backgroundColor == "green") {
-
-                            terulet.children[i].children[j].style.backgroundColor = "yellowgreen";
-                        }
-                        else {
-                            terulet.children[i].children[j].style.backgroundColor = "yellow";
-                            terulet.children[i].children[j].innerHTML = akLogika[i][j];
-                        }
-                    }
-
-
-                    terulet.children[i].children[j].removeEventListener("click", egyfel);
-                }
-            }
-
-        }
-
-
-    </script>
-    <title>Aknakereső</title>
-</head>
-
-<body>
+    <title>AKNAKERESŐ</title>
     <style>
+        body { background-color: black; color: white;text-shadow: 1px 1px 3px #6a6a6a;}
+        
         .sor {
             display: flex;
             flex-wrap: nowrap;
@@ -184,20 +20,247 @@
             align-items: center;
             width: 30px;
             height: 30px;
-            border: 1px solid black;
+            border-top:  2px solid rgb(255, 255, 255);
+            border-right: 3px solid rgb(105, 105, 105);
+            border-bottom: 3px solid rgb(105, 105, 105);
+            border-left: 2px solid rgb(255, 255, 255);
+            background-color: lightgray;
         }
+
     </style>
+    <script>
+        let difficulty = 0.2;
+        let akLogika = [];
+        let meret;
+        let currentIcon = "💣"; // Default to mining at start
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("akBt").addEventListener("click", function () {
+                const sor = parseInt(document.getElementById("sor").value);
+                const oszlop = parseInt(document.getElementById("oszlop").value);
+                const hova = document.getElementById("ak");
+                akGeneral(sor, oszlop, hova);
+            });
+
+            document.getElementById("chbox").addEventListener("change", toggleDifficulty);
+            document.getElementById("nehezseg").addEventListener("input", function () {
+                difficulty = parseFloat(this.value);
+            });
+
+            document.getElementById("mutato").addEventListener("click", function () {
+                currentIcon = currentIcon === "💣" ? "🚩" : "💣"; // Toggle icon
+                this.innerHTML = currentIcon; // Update button to reflect current action
+            });
+        });
+
+        function toggleDifficulty() {
+            const inputField = document.getElementById("nehezseg");
+            const isChecked = document.getElementById("chbox").checked;
+
+            inputField.disabled = !isChecked;
+
+            if (isChecked) {
+                difficulty = parseFloat(inputField.value);
+            } else {
+                difficulty = 0.2;
+            }
+        }
+
+        function akGeneral(sor, oszlop, hova) {
+            hova.innerHTML = "";
+            akLogika = [];
+            meret = sor * oszlop;
+
+            for (let i = 0; i < sor; i++) {
+                const sorElem = document.createElement("div");
+                sorElem.classList.add("sor");
+                akLogika.push([]);
+
+                for (let j = 0; j < oszlop; j++) {
+                    const oszlopElem = document.createElement("div");
+                    oszlopElem.classList.add("oszlop");
+                    oszlopElem.dataset.x = i;
+                    oszlopElem.dataset.y = j;
+                    oszlopElem.addEventListener("click", egyfel);
+                    oszlopElem.addEventListener("contextmenu", (e) => {
+                        e.preventDefault();
+                        oszlopElem.style.backgroundColor = "orange";
+                        oszlopElem.innerHTML = "&#x1F6A9;";
+                    });
+
+                    sorElem.appendChild(oszlopElem);
+                    akLogika[i].push(0);
+                }
+                hova.appendChild(sorElem);
+            }
+
+            console.log(akLogika);
+            logika(akLogika, difficulty);
+        }
+
+        function egyfel() {
+            if (currentIcon === "💣") {
+                // Mining Logic
+                const elem = akLogika[this.dataset.x][this.dataset.y];
+                if (this.style.backgroundColor === "green" || this.style.backgroundColor === "grey") return;
+
+                if (elem !== "A") {
+                    if (elem === 0) {
+                        nulla(parseInt(this.dataset.x), parseInt(this.dataset.y));
+                    } else {
+                        this.style.backgroundColor = "green";
+                        this.innerHTML = elem;
+                    }
+
+                    if (checkWin()) {
+                        fel2();
+                        alert("YOU WIN!");
+                    }
+                } else {
+                    this.style.backgroundColor = "red";
+                    felfed();
+                    alert("YOU LOSE");
+                }
+            } else if (currentIcon === "🚩") {
+                // Flagging Logic
+                if (this.innerHTML === "🚩") {
+                    this.innerHTML = ""; // Remove flag
+                    this.style.backgroundColor = "";
+                } else {
+                    this.innerHTML = "🚩"; // Place flag
+                    this.style.backgroundColor = "orange";
+                }
+            }
+        }
+
+        function logika(akL, arany) {
+            const x = akL.length;
+            const y = akL[0].length;
+            const akna = Math.floor(x * y * arany);
+            let db = 0;
+
+            while (db < akna) {
+                const hx = Math.floor(Math.random() * x);
+                const hy = Math.floor(Math.random() * y);
+                if (akL[hx][hy] !== "A") {
+                    akL[hx][hy] = "A";
+                    db++;
+                }
+            }
+
+            for (let i = 0; i < x; i++) {
+                for (let j = 0; j < y; j++) {
+                    if (akL[i][j] !== "A") {
+                        akL[i][j] = korulotte(i, j, akL, x, y);
+                    }
+                }
+            }
+        }
+
+        function korulotte(x, y, akL, mx, my) {
+            let db = 0;
+            for (let i = Math.max(0, x - 1); i <= Math.min(mx - 1, x + 1); i++) {
+                for (let j = Math.max(0, y - 1); j <= Math.min(my - 1, y + 1); j++) {
+                    if (akL[i][j] === "A") {
+                        db++;
+                    }
+                }
+            }
+            return db;
+        }
+
+        function nulla(x, y) {
+            if (x < 0 || y < 0 || x >= akLogika.length || y >= akLogika[0].length) return;
+
+            const cell = document.querySelector(`[data-x="${x}"][data-y="${y}"]`);
+            if (!cell || cell.style.backgroundColor === "lightgreen" || cell.style.backgroundColor === "green") return;
+
+            const elem = akLogika[x][y];
+            if (elem === 0) {
+                cell.style.backgroundColor = "lightgreen";
+                cell.innerHTML = "";
+            } else {
+                cell.style.backgroundColor = "green";
+                cell.innerHTML = elem;
+            }
+
+            if (elem === 0) {
+                nulla(x - 1, y - 1);
+                nulla(x - 1, y);
+                nulla(x - 1, y + 1);
+                nulla(x, y - 1);
+                nulla(x, y + 1);
+                nulla(x + 1, y - 1);
+                nulla(x + 1, y);
+                nulla(x + 1, y + 1);
+            }
+        }
+
+        function checkWin() {
+            const cells = document.querySelectorAll(".oszlop");
+            const revealedCount = Array.from(cells).filter(
+                (cell) => cell.style.backgroundColor === "green" || cell.style.backgroundColor === "lightgreen"
+            ).length;
+
+            return revealedCount === meret - Math.floor(meret * difficulty);
+        }
+
+        function felfed() {
+            const terulet = document.getElementById("ak");
+            for (let i = 0; i < terulet.children.length; i++) {
+                for (let j = 0; j < terulet.children[i].children.length; j++) {
+                    const a = terulet.children[i].children[j];
+                    if (akLogika[i][j] === "A") {
+                        a.innerHTML = "&#x1F4A3;";
+                        a.style.backgroundColor = "red";
+                    } else if(a.style.backgroundColor =="green"){
+                        a.innerHTML = akLogika[i][j] || "";
+                        a.style.backgroundColor = "yellowgreen";
+                    }
+                    else
+                    {
+                        a.style.backgroundColor = "yellow";
+                    }
+                }
+            }
+        }
+        function fel2() {
+            const terulet = document.getElementById("ak");
+            for (let i = 0; i < terulet.children.length; i++) {
+                for (let j = 0; j < terulet.children[i].children.length; j++) {
+                    const a = terulet.children[i].children[j];
+                    if (akLogika[i][j] === "A") {
+                        a.innerHTML = "&#x1F4A3;";
+                        a.style.backgroundColor = "darkgreen";
+                    } else if(a.style.backgroundColor =="green"){
+                        a.innerHTML = akLogika[i][j] || "";
+                        a.style.backgroundColor = "yellowgreen";
+                    }
+                    else
+                    {
+                        a.style.backgroundColor = "pink";
+                        a.innerHTML = "🦄";
+                    }
+                }
+            }
+        }
+    </script>
+
+</head>
+
+<body>
     <label for="sor">Sor:&emsp;&ensp;</label>
     <input type="number" name="sor" id="sor" value="6">
-    <button type="button" id="akBt">Indít</button><br>
+    <button type="button" id="akBt">Indítás</button><br>
     <label for="oszlop">Oszlop:</label>
-    <input type="number" name="oszlop" id="oszlop" value="6"><br>
+    <input type="number" name="oszlop" id="oszlop" value="6">
+    <button type="button" id="mutato">💣</button><br>
+    <input type="checkbox" id="chbox" value="">
     <label for="nehezseg">Nehézség:</label>
-    <input type="range" name="nehezseg" id="nehezseg" min="0.1" max="0.9" step="0.1" value="0.2">
+    <input type="range" id="nehezseg" min="0.1" max="0.9" step="0.1" value="0.2" disabled>
 
-    <div id="ak">
-
-    </div>
+    <div></div>
+    <div id="ak"></div>
 </body>
 
 </html>
